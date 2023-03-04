@@ -1,1 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CS:GO スキンメモ帳</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-image: url("https://aomaterial.com/wp-content/uploads/2023/02/GAME13-1024x576.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      color: lightblue;
+    }
+    .input-group-text {
+      background-color: #333333;
+      border-color: #333333;
+      color: lightblue;
+    }
+    .form-control:focus {
+      color: black;
+      background-color: #f2f2f2;
+      border-color: #333333;
+      outline: 0;
+      box-shadow: none;
+    }
+    .btn-primary {
+      background-color: #4d4d4d;
+      border-color: #4d4d4d;
+      color: lightblue;
+    }
+    .btn-primary:hover {
+      background-color: #333333;
+      border-color: #333333;
+    }
+    .btn-secondary {
+      background-color: #333333;
+      border-color: #333333;
+      color: lightblue;
+    }
+    .btn-secondary:hover {
+      background-color: #4d4d4d;
+      border-color: #4d4d4d;
+    }
+    .card {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: lightblue;
+    }
+    .memo-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .skin-image {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-3">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8 col-sm-10">
+        <div class="card mb-3">
+          <div class="card-header">
+            <h3 class="card-title mb-0">CS:GO スキンメモ帳</h3>
+          </div>
+          <div class="card-body">
+            <form id="memo-form">
+              <div class="mb-3">
+                <label class="form-label" for="skin-name">スキン名</label>
+                <input class="form-control" type="text" id="skin-name" name="skin-name" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="skin-price">値段</label>
+                <div class="input-group">
+                  <span class="input-group-text">¥</span>
+                  <input class="form-control" type="number" id="skin-price" name="skin-price" min="0" required>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="skin-status">状態</label>
+                <select class="form-select" id="skin-status" name="skin-status">
+                  <option value="未使用">未使用</option>
+                  <option value="新品同様">新品同様</option>
+                  <option value="実地試験済">実地試験済</option>
+                  <option value="かなり摩耗">かなり摩耗</option>
+                  <option value="戦場で傷ついた">戦場で傷ついた</option>
+                  </select>
+                  <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="stattrak-checkbox" name="stattrak-checkbox">
+                    <label class="form-check-label" for="stattrak-checkbox">StatTrakあり</label>
+                  </div>
+                  </div>
+                  <div class="mb-3">
+                  <label class="form-label" for="skin-image">画像</label>
+                  <input class="form-control" type="url" id="skin-image" name="skin-image" placeholder="https://example.com/image.jpg">
+                  </div>
+                  <div class="d-grid gap-2">
+                  <button class="btn btn-primary" type="submit">メモする</button>
+                  </div>
+                  </form>
+                  </div>
+                  </div>
+                  <div class="card">
+                  <div class="card-header">
+                  <h3 class="card-title mb-0">メモ一覧</h3>
+                  </div>
+                  <div class="card-body">
+                  <ul class="list-group memo-list">
+                  </ul>
+                  </div>
+                  <div class="card-footer text-end">
+                  <button class="btn btn-secondary" id="clear-button">クリア</button>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                    </div>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+                    <script>
+                      // クリアボタンをクリックしたときの処理
+                      $("#clear-button").click(function() {
+                        localStorage.clear(); // ローカルストレージをクリア
+                        $(".memo-list").empty(); // メモ一覧を空にする
+                      });
+                    
+                      // メモフォームを送信したときの処理
+                      $("#memo-form").submit(function(event) {
+                        event.preventDefault(); // フォームのデフォルトの送信処理を無効化
+                    
+                        // フォームの入力内容を取得
+                        var skinName = $("#skin-name").val();
+                        var skinPrice = $("#skin-price").val();
+                        var skinStatus = $("#skin-status").val();
+                        var skinImage = $("#skin-image").val();
+                    
+                        // 入力内容をオブジェクトにまとめる
+                        var memo = {
+                          "skinName": skinName,
+                          "skinPrice": skinPrice,
+                          "skinStatus": skinStatus,
+                          "skinImage": skinImage
+                        };
+                    
+                        // メモをローカルストレージに保存する
+                        var memos = JSON.parse(localStorage.getItem("memos") || "[]"); // ローカルストレージからメモの配列を取得
+                        memos.push(memo); // 新しいメモを配列に追加
+                        localStorage.setItem("memos", JSON.stringify(memos)); // ローカルストレージにメモの配列を保存
+                    
+                        // メモ一覧に新しいメモを追加する
+                        var memoItem = $("<li>").addClass("list-group-item");
+                        var memoTitle = $("<h4>").addClass("fw-bold").text(skinName);
+                        var memoPrice = $("<p>").text("値段: ¥" + skinPrice);
+                        var memoStatus = $("<p>").text("状態: " + skinStatus);
+                    
+                        // スキン画像が指定されている場合は画像を表示する
+                        if (skinImage) {
+                          // 画像をリサイズして表示する
+                          var memoImage = $("<img>").addClass("skin-image").attr("src", skinImage).attr("width", "120").attr("height", "90");
+                          memoItem.append(memoImage);
+                        }
+                    
+                        memoItem.append(memoTitle, memoPrice, memoStatus);
+                        $(".memo-list").append(memoItem);
+                    
+                        // 現在時刻を表示する
+                        var now = new Date();
+                        var jstOffset = 9 * 60; // 日本標準時の時差（分）
+                        var jstTime = new Date(now.getTime() + jstOffset * 60 * 1000);
+                        var memoTime = $("<p>").text("投稿日時: " + jstTime.toLocaleString("ja-JP"));
+                        memoItem.append(memoTime);
+                    
+                        // フォームをリセットする
+                        $("#memo-form")[0].reset();
+                      });
+                    </script>
+</body>
+</html>
 
