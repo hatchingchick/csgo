@@ -143,34 +143,31 @@
                         event.preventDefault(); 
                     
                   
-                        var skinName = $("#skin-name").val();
-                        var skinPrice = $("#skin-price").val();
-                        var skinStatus = $("#skin-status").val();
-                        var skinImage = $("#skin-image").val();
-                    
-                
-                       var statTrak = $("#stattrak-checkbox").prop("checked") ? "あり" : "なし";
+var skinName = $("#skin-name").val();
+var skinPrice = $("#skin-price").val();
+var skinStatus = $("#skin-status").val();
+var skinImage = $("#skin-image").val();
+var statTrak = $("#stattrak-checkbox").prop("checked") ? "あり" : "なし";
 
-                        
-                             var memo = {
-                             "skinName": skinName,
-                              "skinPrice": skinPrice,
-                             "skinStatus": skinStatus,
-                                "skinImage": skinImage,
-                              "statTrak": statTrak
-                                      };
-                  
-                        var memos = JSON.parse(localStorage.getItem("memos") || "[]"); 
-                        memos.push(memo); 
-                        localStorage.setItem("memos", JSON.stringify(memos)); 
-                    
-                    
-                        var memoItem = $("<li>").addClass("list-group-item");
-                        var memoTitle = $("<h4>").addClass("fw-bold").text(skinName);
-                        var memoPrice = $("<p>").text("値段:¥" + skinPrice);
-                        var memoStatus = $("<p>").text("状態:" + skinStatus);
-                          var memoStatus = $("<p>").text("statTrak: " +statTrak);
-                       
+var memo = {
+    "skinName": skinName,
+    "skinPrice": skinPrice,
+    "skinStatus": skinStatus,
+    "skinImage": skinImage,
+    "statTrak": statTrak
+};
+
+var memos = JSON.parse(localStorage.getItem("memos") || "[]"); 
+memos.push(memo); 
+localStorage.setItem("memos", JSON.stringify(memos)); 
+
+var memoItem = $("<li>").addClass("list-group-item");
+var memoTitle = $("<h4>").addClass("fw-bold").text(skinName);
+var memoPrice = $("<p>").text("値段:¥" + skinPrice);
+var memoStatus = $("<p>").text("状態:" + skinStatus);
+var memoStatTrak = $("<p>").text("statTrak: " +statTrak);
+
+memoItem.append(memoTitle, memoPrice, memoStatus, memoStatTrak);
                         if (skinImage) {
                          
                           var memoImage = $("<img>").addClass("skin-image").attr("src", skinImage).attr("width", "120").attr("height", "90");
