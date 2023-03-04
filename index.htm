@@ -31,7 +31,7 @@
     }
     .form-control:focus {
       color: black;
-      background-color: #f2f2f2;
+      background-color: #d2dbf5;
       border-color: #333333;
       outline: 0;
       box-shadow: none;
@@ -132,44 +132,47 @@
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
                     <script>
-                      // クリアボタンをクリックしたときの処理
+                     
                       $("#clear-button").click(function() {
-                        localStorage.clear(); // ローカルストレージをクリア
-                        $(".memo-list").empty(); // メモ一覧を空にする
+                        localStorage.clear(); 
+                        $(".memo-list").empty();
                       });
                     
-                      // メモフォームを送信したときの処理
+                      
                       $("#memo-form").submit(function(event) {
-                        event.preventDefault(); // フォームのデフォルトの送信処理を無効化
+                        event.preventDefault(); 
                     
-                        // フォームの入力内容を取得
+                  
                         var skinName = $("#skin-name").val();
                         var skinPrice = $("#skin-price").val();
                         var skinStatus = $("#skin-status").val();
                         var skinImage = $("#skin-image").val();
                     
-                        // 入力内容をオブジェクトにまとめる
-                        var memo = {
-                          "skinName": skinName,
-                          "skinPrice": skinPrice,
-                          "skinStatus": skinStatus,
-                          "skinImage": skinImage
-                        };
+                
+                       var statTrak = $("#stattrak-checkbox").prop("checked") ? "あり" : "なし";
+
+                        
+                             var memo = {
+                             "skinName": skinName,
+                              "skinPrice": skinPrice,
+                             "skinStatus": skinStatus,
+                                "skinImage": skinImage,
+                              "statTrak": statTrak
+                                      };
+                  
+                        var memos = JSON.parse(localStorage.getItem("memos") || "[]"); 
+                        memos.push(memo); 
+                        localStorage.setItem("memos", JSON.stringify(memos)); 
                     
-                        // メモをローカルストレージに保存する
-                        var memos = JSON.parse(localStorage.getItem("memos") || "[]"); // ローカルストレージからメモの配列を取得
-                        memos.push(memo); // 新しいメモを配列に追加
-                        localStorage.setItem("memos", JSON.stringify(memos)); // ローカルストレージにメモの配列を保存
                     
-                        // メモ一覧に新しいメモを追加する
                         var memoItem = $("<li>").addClass("list-group-item");
                         var memoTitle = $("<h4>").addClass("fw-bold").text(skinName);
-                        var memoPrice = $("<p>").text("値段: ¥" + skinPrice);
-                        var memoStatus = $("<p>").text("状態: " + skinStatus);
-                    
-                        // スキン画像が指定されている場合は画像を表示する
+                        var memoPrice = $("<p>").text("値段:¥" + skinPrice);
+                        var memoStatus = $("<p>").text("状態:" + skinStatus);
+                          var memoStatus = $("<p>").text("statTrak: " +statTrak);
+                       
                         if (skinImage) {
-                          // 画像をリサイズして表示する
+                         
                           var memoImage = $("<img>").addClass("skin-image").attr("src", skinImage).attr("width", "120").attr("height", "90");
                           memoItem.append(memoImage);
                         }
@@ -177,16 +180,14 @@
                         memoItem.append(memoTitle, memoPrice, memoStatus);
                         $(".memo-list").append(memoItem);
                     
-                     var now = new Date();
-var jstOffset = -9 * 60; // 日本標準時の時差（分）をマイナスで指定
-var jstTime = new Date(now.getTime() + jstOffset * 60 * 1000);
-var memoTime = $("<p>").text("投稿日時: " + jstTime.toLocaleString("ja-JP"));
-memoItem.append(memoTime);
+                        var now = new Date();
+                        var jstTime = now.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
+                        var memoTime = $("<p>").text("時刻:" + jstTime);
+                           memoItem.append(memoTime);
                     
-                        // フォームをリセットする
+                       
                         $("#memo-form")[0].reset();
                       });
                     </script>
-</body>
-</html>
-
+                   </body>
+                  </html>
