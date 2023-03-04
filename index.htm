@@ -177,12 +177,11 @@
                         memoItem.append(memoTitle, memoPrice, memoStatus);
                         $(".memo-list").append(memoItem);
                     
-                        // 現在時刻を表示する
-                        var now = new Date();
-                        var jstOffset = 9 * 60; // 日本標準時の時差（分）
-                        var jstTime = new Date(now.getTime() + jstOffset * 60 * 1000);
-                        var memoTime = $("<p>").text("投稿日時: " + jstTime.toLocaleString("ja-JP"));
-                        memoItem.append(memoTime);
+                     var now = new Date();
+var jstOffset = -9 * 60; // 日本標準時の時差（分）をマイナスで指定
+var jstTime = new Date(now.getTime() + jstOffset * 60 * 1000);
+var memoTime = $("<p>").text("投稿日時: " + jstTime.toLocaleString("ja-JP"));
+memoItem.append(memoTime);
                     
                         // フォームをリセットする
                         $("#memo-form")[0].reset();
